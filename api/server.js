@@ -1,9 +1,20 @@
+// npm import
 const express = require('express');
+// router imports
+const projectsRouter = require('./projects/projects-router');
+const actionsRouter = require('./actions/actions-router');
+// custom middleware import
+const { logger } = require('./projects/projects-middleware');
+// server declaration
 const server = express();
-
-// Configure your server here
-// Build your actions router in /api/actions/actions-router.js
-// Build your projects router in /api/projects/projects-router.js
-// Do NOT `server.listen()` inside this file!
-
+// middleware uses
+server.use(express.json());
+server.use(logger);
+server.use('/api/projects', projectsRouter);
+server.use('/api/actions', actionsRouter);
+// base route
+server.get('/', (req, res) => {
+    res.send("server working");
+});
+// export
 module.exports = server;
